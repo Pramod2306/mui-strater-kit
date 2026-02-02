@@ -1,0 +1,56 @@
+---
+alwaysApply: true
+---
+
+# Documentation Mandate: Feature-First Docs
+
+Every feature in `src/features/` (Frontend or Backend) MUST contain a `README.md` file. No feature is considered "Done" or "Mergeable" without updated documentation.
+
+## 1. Documentation Location
+
+- Path: `src/features/{feature-name}/README.md`
+- Purpose: To provide immediate context to any human developer or AI agent interacting with the feature.
+
+## 2. Required README Sections
+
+Every feature README must follow this standard structure:
+
+### A. Context & Purpose
+
+- **What** does this feature do? (e.g., "Handles restaurant table reservations and status updates.")
+- **Business Rules**: List specific constraints (e.g., "A table cannot be reserved if it has an active order.")
+
+### B. The Contract (Interface)
+
+- **Inputs**: What are the primary DTOs or props this feature expects?
+- **Outputs**: What data shapes does it return?
+- **Public API**: List what is exported via `index.ts`.
+
+### C. Architecture Mapping (MVC)
+
+- **Model**: Briefly describe the data schema/entities involved.
+- **Service/Logic**: Highlight the main business logic methods in the Service layer.
+- **Dependencies**: List other features this feature depends on (e.g., "Depends on: Auth, Billing").
+
+### D. Testing Status
+
+- Describe how to run tests for this specific feature.
+- List any specific MSW handlers or mock data used.
+
+## 3. Rules for AI Agents
+
+- When creating a new feature, you MUST automatically generate the `README.md` with the sections above.
+- If I ask to "refactor" or "add logic" to a feature, you MUST check the `README.md` first to ensure business rules are respected.
+- After a significant logic change, you MUST suggest an update to the `README.md` to reflect the new behavior.
+
+## 4. Documentation Quality (Spaghetti Prevention)
+
+- **No Stale Docs**: If the code changes, the doc MUST change in the same PR.
+- **Diagrams (Optional)**: For complex flows (like a 5-step checkout), include a Mermaid.js diagram in the markdown.
+
+### E. Safe Deletion Checklist
+
+- Remove route entry
+- Remove exports from index.ts
+- Remove feature README references
+- Confirm no cross-feature imports

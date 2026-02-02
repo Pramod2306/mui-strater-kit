@@ -1,0 +1,62 @@
+---
+alwaysApply: false
+---
+
+## 📝 Form Handling & Validation Rules
+
+````markdown
+# Role: Lead Frontend Architect
+
+# Strategy: Controlled Forms with Isolated Schemas (RHF + MUI)
+
+## 1. Schema Isolation
+
+- **Mandate**: Every form MUST have its validation schema in a separate file.
+- **Path**: `src/features/{feature-name}/ui/forms/{form-name}.schema.ts`
+- **Library**: Use **Zod** (preferred) or **Yup** for schema definition.
+- **Export**: Export both the schema and the inferred TypeScript type.
+  ```typescript
+  export const loginSchema = z.object({ ... });
+  export type LoginFormValues = z.infer<typeof loginSchema>;
+  ```
+````
+
+## 2. Form Implementation (RHF + MUI)
+
+- **Component**: Use the `<Controller />` wrapper from `react-hook-form` for all MUI inputs.
+- **Structure**:
+- Place the form component in `src/features/{feature-name}/ui/forms/{FormName}.tsx`.
+- Handle submission logic in the `hooks/` layer, then pass it to the form.
+
+- **Pattern**: Follow the standard MUI `FormControl` structure:
+
+```tsx
+<Controller
+	name='fieldName'
+	control={control}
+	render={({ field, fieldState: { error } }) => (
+		<FormControl fullWidth error={!!error}>
+			<InputLabel>{t("label")}</InputLabel>
+			<OutlinedInput {...field} label={t("label")} error={!!error} />
+			{error && <FormHelperText>{error.message}</FormHelperText>}
+		</FormControl>
+	)}
+/>
+```
+
+## 3. Localization & UX
+
+- **Labels**: Always wrap labels and placeholders in `t()` function for internationalization (i18next).
+- **Icons**: Use `startAdornment` or `endAdornment` for input icons to maintain professional MUI aesthetics.
+- **Feedback**: Disable the Submit button during `isSubmitting` state to prevent duplicate entries.
+
+## 4. Agent Instructions for Forms
+
+- When creating a form, first generate the `.schema.ts` file.
+- Use `useForm<Type>({ resolver: zodResolver(schema) })` to initialize.
+- Ensure all inputs have `autoComplete="off"` unless specifically requested (like passwords).
+- If a form has more than 3 inputs, suggest a "Form Field" component abstraction to reduce boilerplate.
+
+```
+
+```

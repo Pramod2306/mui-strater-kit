@@ -1,0 +1,9 @@
+import { createRoute, createFileRoute } from '@tanstack/react-router'
+import { rootRoute } from './__root'
+
+export const Route = createRoute('/auth')({
+  getParentRoute: () => rootRoute,
+  path: '/auth',
+  component: () => <div>Auth</div>,
+})
+

@@ -1,0 +1,14 @@
+{
+	"auth": {
+		"loginForm": {
+			"email": "Email",
+			"password": "Password",
+			"signIn": "Sign in",
+			"signingIn": "Signing in…",
+			"forgotPassword": "Forgot password?"
+		},
+		"layout": {
+			"title": "AuthLayout"
+		}
+	}
+}

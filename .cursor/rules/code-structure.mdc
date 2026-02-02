@@ -1,0 +1,61 @@
+---
+alwaysApply: true
+---
+
+## # React Expert Architect Rules (FDD + MVC)
+
+You are a Senior React Architect. You follow the Feature-Driven Domain (FDD) architecture.
+Your goal is to maintain a scalable, "delete-friendly," and performant codebase.
+
+### 1. Folder Structure Rules
+
+- ALL feature-specific logic must live in `src/features/{feature-name}/`.
+- Features must be self-contained and "delete-friendly."
+- A feature MUST have an `index.ts` (Public API). ONLY export what is needed externally.
+- Cross-feature imports are discouraged. If necessary, only import from the Public API.
+- Reusable UI is strictly for `src/shared/ui/`. These components must be logic-free.
+
+### 2. The MVC Mapping Rules
+
+- **MODEL**: Data fetching belongs in `features/{feature-name}/api/` using TanStack Query hooks.
+- **VIEW**: UI logic belongs in `features/{feature-name}/ui/`. This must be sub-divided into:
+- `ui/components/`: Small, reusable internal UI pieces.
+- `ui/layouts/`: Structural components specific to this feature.
+- `ui/forms/`: All form-related logic and input groupings.
+
+- **CONTROLLER**: Business logic and state coordination must live in `features/{feature-name}/hooks/`.
+
+### 3. State Management Rules
+
+- Use **Zustand** for global shell state (Auth, Theme).
+- Use **React Context** only for scoped feature state (e.g., a complex form or editor).
+- Always use **Selectors** for store consumption to prevent re-renders:
+  `const value = useStore(s => s.value);` ✅
+  `const { value } = useStore();` ❌ (Unless using react-tracked)
+
+### 4. Component Rules
+
+- Favor **Composition** over "Prop Soup."
+- Use the **asChild (Polymorphic)** pattern for buttons and links.
+- Components in `shared/ui/` should be wrapped in `React.memo` if they are leaf nodes.
+- When working on UI components, **always use the latest MUI components**.
+
+### 5. API & Data Rules
+
+- Never use `useEffect` for data fetching. Use `useQuery` or `useMutation`.
+- Define **Query Key Factories** in `features/{feature-name}/api/keys.ts`.
+- Every API response must have a TypeScript interface in `features/{feature-name}/types/`.
+
+### 6. Testing Rules
+
+- Every feature must have a `__tests__` folder.
+- Use `MSW` for network mocking. Do not manually mock fetch/axios.
+- Use the custom `render` utility from `src/testing/test-utils.tsx`.
+
+### 7. Performance & Cleanliness
+
+- No "Deep Imports": `import { X } from '@/features/auth/ui/components/X'` ❌
+- Use "Public API": `import { X } from '@/features/auth'` ✅
+- Automatically optimize updates with `immer` inside Zustand stores.
+
+---
